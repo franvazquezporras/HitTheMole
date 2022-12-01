@@ -4,21 +4,36 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    private GameObject[] SpawnsFloor;
-    public GameObject hole;
+    [SerializeField] private Transform[] spawnsFloor;
+    [SerializeField] private GameObject hole;
+    [SerializeField] private int numberOfHoleLevel;
+    private Transform[] activeSpawns;
 
+
+    private void Awake()
+    {
+        activeSpawns = new Transform[numberOfHoleLevel];
+    }
     private void Start()
     {
-        SpawnsFloor = GameObject.FindGameObjectsWithTag("Floor");
-
-        for(int i = 0; i < SpawnsFloor.Length; i++)
+        int savedHoles = 0;
+        for(int block = 0; block < spawnsFloor.Length; block++)
         {
-            Debug.Log("bloque: " + SpawnsFloor[i].name);
-            if(i == 5)
+            int save = Random.Range(0, 2);         
+            if (save == 1)
             {
-                //SpawnsFloor[i].transform.GetChild(0).gameObject.SetActive(true);
-                Instantiate(hole, new Vector3(SpawnsFloor[i].transform.position.x, SpawnsFloor[i].transform.position.y+5.7f, SpawnsFloor[i].transform.position.z),hole.transform.rotation*Quaternion.identity);
+                activeSpawns[savedHoles] = spawnsFloor[block];
+                savedHoles++;
+                if (savedHoles == numberOfHoleLevel)                                   
+                    break;      
             }
+           
+        }
+        
+        for(int i = 0; i < activeSpawns.Length; i++)
+        { 
+                //SpawnsFloor[i].transform.GetChild(0).gameObject.SetActive(true);
+                Instantiate(hole, new Vector3(activeSpawns[i].position.x, activeSpawns[i].position.y+5.7f, activeSpawns[i].position.z),hole.transform.rotation*Quaternion.identity);
         }
     }
 }
