@@ -11,12 +11,12 @@ public class MoleController : MonoBehaviour
     [SerializeField] private GameObject duck;
     [SerializeField] private GameObject plant;
 
-    private Vector3 startPosition = new Vector3(0f,0f,0f);
-    private Vector3 endPosition = new Vector3(0f, 12f, 0f);
+    private Vector3 startPosition = new Vector3(0f,-5f,0f);
+    private Vector3 endPosition = new Vector3(0f, 5f, 0f);
     private float showDuration = 0.5f;
-    private float duration = 1f;
+    private float duration = 2f;
 
-    private GameObject mob;
+    
     private bool hittable = true;
 
     public enum MoleType { typeMole, typePenguin,typeDuck,typePlant};
@@ -25,10 +25,7 @@ public class MoleController : MonoBehaviour
     private int lives;
 
 
-    private void Awake()
-    {
-        mob = gameObject;
-    }
+    
     private void Start()
     {
         CreateNext();
@@ -41,13 +38,16 @@ public class MoleController : MonoBehaviour
         if(random  < penguinRate)
         {
             mobType = MoleType.typePenguin;
+            Instantiate(penguin, this.transform);            
             lives = 2;
         }
         else
         {
             mobType = MoleType.typeMole;
+            Instantiate(mole, this.transform);
             lives = 1;
         }
+        
         hittable = true;
     }
 
@@ -64,7 +64,7 @@ public class MoleController : MonoBehaviour
                     hittable = false;
                     break;
                 case MoleType.typePenguin:
-                    if (lives > 0)                    
+                    if (lives > 1)                    
                         lives--;
                     else
                     {
@@ -81,7 +81,7 @@ public class MoleController : MonoBehaviour
                     break;
 
             }
-            
+
         }
         
     }
@@ -94,14 +94,22 @@ public class MoleController : MonoBehaviour
     }
 
 
-    public void Hide()
+    private void Hide()
     {
-        transform.localPosition = startPosition;
+        transform.localPosition = startPosition;       
+    }
+
+    private void Refresh()
+    {
+        Destroy(gameObject.transform.GetChild(0).gameObject);
+        CreateNext();
+        StartCoroutine(ShowHide(startPosition, endPosition));
     }
     private IEnumerator ShowHide(Vector3 start, Vector3 end)
     {
         transform.localPosition = start;
 
+        yield return new WaitForSeconds(1);
         float elapsed = 0f;
         while(elapsed < showDuration)
         {
@@ -110,7 +118,7 @@ public class MoleController : MonoBehaviour
             yield return null;
         }
         transform.localPosition = end;
-
+        duration = Random.Range(1, 5);
         yield return new WaitForSeconds(duration);
 
         elapsed = 0f;
@@ -121,6 +129,7 @@ public class MoleController : MonoBehaviour
             yield return null;
         }
         transform.localPosition = start;
+        Refresh();
     }
 
 }
