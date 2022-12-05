@@ -22,6 +22,8 @@ public class MoleController : MonoBehaviour
     public enum MoleType { typeMole, typePenguin,typeDuck,typePlant};
     private MoleType mobType;
     private float penguinRate = 0.25f;
+    private float plantRate = 0.1f;
+    private float duckRate = 0.2f;
     private int lives;
 
 
@@ -35,7 +37,18 @@ public class MoleController : MonoBehaviour
     private void CreateNext()
     {
         float random = Random.Range(0f, 1f);
-        if(random  < penguinRate)
+        if(random < plantRate)
+        {
+            mobType = MoleType.typePlant;
+            Instantiate(plant, this.transform);            
+            lives = 1;
+        }else if(random < duckRate)
+        {
+            mobType = MoleType.typeDuck;
+            Instantiate(duck, this.transform);
+            lives = 1;
+        }
+        else if(random  < penguinRate)
         {
             mobType = MoleType.typePenguin;
             Instantiate(penguin, this.transform);            
@@ -60,8 +73,9 @@ public class MoleController : MonoBehaviour
             {
                 case MoleType.typeMole:
                     StopAllCoroutines();
-                    StartCoroutine(QuickHide());
+                    StartCoroutine(QuickHide());                    
                     hittable = false;
+                    Refresh();
                     break;
                 case MoleType.typePenguin:
                     if (lives > 1)                    
@@ -69,13 +83,22 @@ public class MoleController : MonoBehaviour
                     else
                     {
                         StopAllCoroutines();
-                        StartCoroutine(QuickHide());
-                        hittable = false;                        
+                        StartCoroutine(QuickHide());                        
+                        hittable = false;
+                        Refresh();
                     }
                     break;
                 case MoleType.typeDuck:
+                    StopAllCoroutines();
+                    StartCoroutine(QuickHide());
+                    hittable = false;
+                    Refresh();
                     break;
                 case MoleType.typePlant:
+                    StopAllCoroutines();
+                    StartCoroutine(QuickHide());                    
+                    hittable = false;
+                    Refresh();
                     break;
                 default:
                     break;

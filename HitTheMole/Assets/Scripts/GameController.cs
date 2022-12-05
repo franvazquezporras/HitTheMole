@@ -10,7 +10,6 @@ public class GameController : MonoBehaviour
     private Transform[] activeSpawns;
 
 
-
     private void Awake()
     {
         activeSpawns = new Transform[numberOfHoleLevel];
@@ -32,8 +31,7 @@ public class GameController : MonoBehaviour
         }
         
         for(int i = 0; i < activeSpawns.Length; i++)
-        { 
-                //SpawnsFloor[i].transform.GetChild(0).gameObject.SetActive(true);
+        {                
                 Instantiate(hole, new Vector3(activeSpawns[i].position.x, activeSpawns[i].position.y, activeSpawns[i].position.z),hole.transform.rotation*Quaternion.identity);
         }
     }
