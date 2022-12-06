@@ -12,4 +12,5 @@ public static class Layers
     public const int UI = 5;
     public const int ENEMY = 6;
     public const int FLOOR = 7;
+    public const int GAMEMANAGER = 8;
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class MoleController : MonoBehaviour
 {
 
@@ -25,7 +26,7 @@ public class MoleController : MonoBehaviour
     private float plantRate = 0.1f;
     private float duckRate = 0.2f;
     private int lives;
-
+    
 
     
     private void Start()
@@ -68,45 +69,37 @@ public class MoleController : MonoBehaviour
     {
         if (hittable)
         {
-
             switch (mobType)
             {
                 case MoleType.typeMole:
-                    StopAllCoroutines();
-                    StartCoroutine(QuickHide());                    
-                    hittable = false;
-                    Refresh();
+                    GetDamage();
                     break;
                 case MoleType.typePenguin:
                     if (lives > 1)                    
                         lives--;
-                    else
-                    {
-                        StopAllCoroutines();
-                        StartCoroutine(QuickHide());                        
-                        hittable = false;
-                        Refresh();
-                    }
+                    else                    
+                        GetDamage();                    
                     break;
                 case MoleType.typeDuck:
-                    StopAllCoroutines();
-                    StartCoroutine(QuickHide());
-                    hittable = false;
-                    Refresh();
+                    GetDamage();
+                    GameObject.Find("GameController").GetComponent<Health>().TakeDamage();
                     break;
                 case MoleType.typePlant:
-                    StopAllCoroutines();
-                    StartCoroutine(QuickHide());                    
-                    hittable = false;
-                    Refresh();
+                    GetDamage();
                     break;
                 default:
                     break;
-
             }
 
         }
         
+    }
+    private void GetDamage()
+    {
+        StopAllCoroutines();
+        StartCoroutine(QuickHide());
+        hittable = false;
+        Refresh();
     }
 
     private IEnumerator QuickHide()
