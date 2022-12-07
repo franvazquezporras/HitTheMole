@@ -39,11 +39,18 @@ public class OptionsControl : MonoBehaviour
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width,resolution.height,Screen.fullScreen);
     }
-    public void SetVolume(float volume)
+    public void SetMasterVolume(float volume)
     {
-        audioMixer.SetFloat("volume", volume);
+        audioMixer.SetFloat("masterVolume", Mathf.Log10(volume) * 20);                
     }
-
+    public void SetMusicVolume(float volume)
+    {
+        audioMixer.SetFloat("musicVolume", Mathf.Log10(volume) * 20);
+    }
+    public void SetSoundVolume(float volume)
+    {
+        audioMixer.SetFloat("soundsVolume", Mathf.Log10(volume) * 20);
+    }
     public void SetQuality(int qualityIndex)
     {
         QualitySettings.SetQualityLevel(qualityIndex);

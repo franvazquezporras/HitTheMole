@@ -7,28 +7,39 @@ public class MoleController : MonoBehaviour
 {
 
     //Variable
+    //Mobs
     [SerializeField] private GameObject mole;
     [SerializeField] private GameObject penguin;
     [SerializeField] private GameObject duck;
     [SerializeField] private GameObject plant;
+    private enum MoleType { typeMole, typePenguin, typeDuck, typePlant };
+    private MoleType mobType;
 
+    //AudiosMob
+    [SerializeField] private AudioClip moledeath;
+    [SerializeField] private AudioClip duckdeath;
+    [SerializeField] private AudioClip penguindeath;
+    [SerializeField] private AudioClip plantdeath;
+    [SerializeField] private AudioSource soundActive;
+    
+    //Positions and rates
     private Vector3 startPosition = new Vector3(0f,-5f,0f);
     private Vector3 endPosition = new Vector3(0f, 5f, 0f);
     private float showDuration = 0.5f;
-    private float duration = 2f;
-
-    
-    private bool hittable = true;
-
-    public enum MoleType { typeMole, typePenguin,typeDuck,typePlant};
-    private MoleType mobType;
+    private float duration = 2f;    
+    private bool hittable = true;    
     private float penguinRate = 0.25f;
-    private float plantRate = 0.1f;
+    private float plantRate = 0.05f;
     private float duckRate = 0.2f;
-    private int lives;
     
+    //score
+    [SerializeField] private int score;
+    private ScoreControl controlScore;
 
-    
+    private void Awake()
+    {
+        controlScore = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoreControl>();
+    }
     private void Start()
     {
         CreateNext();
@@ -41,27 +52,22 @@ public class MoleController : MonoBehaviour
         if(random < plantRate)
         {
             mobType = MoleType.typePlant;
-            Instantiate(plant, this.transform);            
-            lives = 1;
+            Instantiate(plant, this.transform);                
         }else if(random < duckRate)
         {
             mobType = MoleType.typeDuck;
-            Instantiate(duck, this.transform);
-            lives = 1;
+            Instantiate(duck, this.transform);    
         }
         else if(random  < penguinRate)
         {
             mobType = MoleType.typePenguin;
-            Instantiate(penguin, this.transform);            
-            lives = 2;
+            Instantiate(penguin, this.transform);                
         }
         else
         {
             mobType = MoleType.typeMole;
-            Instantiate(mole, this.transform);
-            lives = 1;
-        }
-        
+            Instantiate(mole, this.transform);    
+        }        
         hittable = true;
     }
 
@@ -72,30 +78,37 @@ public class MoleController : MonoBehaviour
             switch (mobType)
             {
                 case MoleType.typeMole:
+                    soundActive.clip = moledeath;
+                    score = 1;
                     GetDamage();
                     break;
                 case MoleType.typePenguin:
-                    if (lives > 1)                    
-                        lives--;
-                    else                    
-                        GetDamage();                    
+                    soundActive.clip = penguindeath;
+                    score = 2;
+                    GetDamage();                    
                     break;
                 case MoleType.typeDuck:
+                    soundActive.clip = duckdeath;
+                    score = -1;
                     GetDamage();
                     GameObject.Find("GameController").GetComponent<Health>().TakeDamage();
                     break;
                 case MoleType.typePlant:
+                    soundActive.clip = plantdeath;
+                    score = 0;
+                    //GETPOWERUP
                     GetDamage();
                     break;
                 default:
                     break;
             }
-
-        }
-        
+        }        
     }
     private void GetDamage()
     {
+        controlScore.SetScore(score);
+        soundActive.Play();
+        gameObject.GetComponent<Collider>().enabled = false;
         StopAllCoroutines();
         StartCoroutine(QuickHide());
         hittable = false;
@@ -127,12 +140,14 @@ public class MoleController : MonoBehaviour
 
         yield return new WaitForSeconds(1);
         float elapsed = 0f;
-        while(elapsed < showDuration)
+        
+        while (elapsed < showDuration)
         {
             transform.localPosition = Vector3.Lerp(start, end, elapsed / showDuration);
             elapsed += Time.deltaTime;
             yield return null;
         }
+        gameObject.GetComponent<Collider>().enabled = true;
         transform.localPosition = end;
         duration = Random.Range(1, 5);
         yield return new WaitForSeconds(duration);

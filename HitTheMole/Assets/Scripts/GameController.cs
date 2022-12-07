@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
+using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
     [SerializeField] private Transform[] spawnsFloor;
@@ -11,6 +13,8 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private GameObject losePanel;
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] private Image musicOFF;
 
     private void Awake()
     {
@@ -48,6 +52,26 @@ public class GameController : MonoBehaviour
     public void LosePanel()
     {
         losePanel.SetActive(true);
+    }
+
+    public void ClearLevel()
+    {
+        //mostar panel de level completo
+        //cargar mapa de niveles o siguiente nivel
+    }
+    public void MusicOnOff()
+    {
+        if (musicOFF.IsActive())
+        {
+            audioMixer.SetFloat("masterVolume", 1);
+            musicOFF.gameObject.SetActive(false);
+        }
+        else
+        {
+            audioMixer.SetFloat("masterVolume", -80);            
+            musicOFF.gameObject.SetActive(true);
+        }
+            
     }
     public void Retry()
     {
