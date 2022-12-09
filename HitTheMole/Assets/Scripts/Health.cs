@@ -28,7 +28,6 @@ public class Health : MonoBehaviour
         if (health == 0)
         {
             GetComponent<GameController>().LosePanel();
-            Time.timeScale = 0;
         }
     }
 

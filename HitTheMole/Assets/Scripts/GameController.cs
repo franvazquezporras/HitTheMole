@@ -11,16 +11,21 @@ public class GameController : MonoBehaviour
     [SerializeField] private int numberOfHoleLevel;
     private Transform[] activeSpawns;
 
-    [SerializeField] private GameObject losePanel;
-    [SerializeField] private GameObject pauseMenu;
+    [Header("Audio")]
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private Image musicOFF;
+    
+    [Header("Panel References")]
+    [SerializeField] private GameObject losePanel;
+    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject winPanel;
 
     private void Awake()
     {
         Time.timeScale = 1;
         activeSpawns = new Transform[numberOfHoleLevel];
     }
+
     private void Start()
     {
         int savedHoles = 0;
@@ -44,21 +49,25 @@ public class GameController : MonoBehaviour
         Time.timeScale = 0;
         pauseMenu.SetActive(true);
     }
+    
     public void ClosePause()
     {
         Time.timeScale = 1;
         pauseMenu.SetActive(false);
     }
+
     public void LosePanel()
     {
+        Time.timeScale = 0;
         losePanel.SetActive(true);
     }
 
     public void ClearLevel()
     {
-        //mostar panel de level completo
-        //cargar mapa de niveles o siguiente nivel
+        Time.timeScale = 0;
+        winPanel.SetActive(true);       
     }
+
     public void MusicOnOff()
     {
         if (musicOFF.IsActive())
@@ -73,10 +82,22 @@ public class GameController : MonoBehaviour
         }
             
     }
+    
+    public void NextLevel(string nextLevel)
+    {
+        LoadScene(nextLevel);
+    }
+
+    public void LoadMap()
+    {
+        LoadScene("LevelMap");
+    }
+    
     public void Retry()
     {
         LoadScene(SceneManager.GetActiveScene().name);
     }
+    
     public void LoadScene(string scene)
     {
         SceneManager.LoadScene(scene);        
