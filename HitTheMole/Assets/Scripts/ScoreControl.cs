@@ -23,7 +23,6 @@ public class ScoreControl : MonoBehaviour
         {
             gameObject.GetComponent<GameController>().ClearLevel();
         }
-
     }
     public void SetScore(int scoreValue)
     {

@@ -25,6 +25,10 @@ public class Timer : MonoBehaviour
     {
         GetComponent<GameController>().LosePanel();
     }
+    public void SetExtraTime()
+    {
+        remainingDuration += Random.Range(5, 10);
+    }
     private IEnumerator UpdateTimer()
     {
         while (remainingDuration >= 0)

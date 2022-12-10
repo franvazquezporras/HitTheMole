@@ -29,16 +29,16 @@ public class MoleController : MonoBehaviour
     private float duration = 2f;    
     private bool hittable = true;    
     private float penguinRate = 0.25f;
-    private float plantRate = 0.05f;
+    private float plantRate = 0.1f;
     private float duckRate = 0.2f;
     
-    //score
-    [SerializeField] private int score;
-    private ScoreControl controlScore;
+    //score and extra time
+    [SerializeField] private int score;  
+    GameObject gameController;
 
     private void Awake()
     {
-        controlScore = GameObject.FindGameObjectWithTag("GameController").GetComponent<ScoreControl>();
+        gameController = GameObject.FindGameObjectWithTag("GameController").gameObject;
     }
     private void Start()
     {
@@ -91,12 +91,12 @@ public class MoleController : MonoBehaviour
                     soundActive.clip = duckdeath;
                     score = -1;
                     GetDamage();
-                    GameObject.Find("GameController").GetComponent<Health>().TakeDamage();
+                    gameController.GetComponent<Health>().TakeDamage();
                     break;
                 case MoleType.typePlant:
                     soundActive.clip = plantdeath;
                     score = 0;
-                    //GETPOWERUP
+                    gameController.GetComponent<Timer>().SetExtraTime();
                     GetDamage();
                     break;
                 default:
@@ -106,7 +106,7 @@ public class MoleController : MonoBehaviour
     }
     private void GetDamage()
     {
-        controlScore.SetScore(score);
+        gameController.GetComponent<ScoreControl>().SetScore(score);
         soundActive.Play();
         gameObject.GetComponent<Collider>().enabled = false;
         StopAllCoroutines();
