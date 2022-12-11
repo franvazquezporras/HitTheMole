@@ -6,10 +6,12 @@ using UnityEngine.Audio;
 using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
+    [Header("Spawners")]
     [SerializeField] private Transform[] spawnsFloor;
     [SerializeField] private GameObject hole;
     [SerializeField] private int numberOfHoleLevel;
     private Transform[] activeSpawns;
+    private int savedHoles;
 
     [Header("Audio")]
     [SerializeField] private AudioMixer audioMixer;
@@ -19,7 +21,9 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject losePanel;
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject winPanel;
-
+    [SerializeField] private GameObject initPanel;
+    [SerializeField] private Sprite goImage;
+    
     private void Awake()
     {
         Time.timeScale = 1;
@@ -28,7 +32,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        int savedHoles = 0;
+        savedHoles = 0;
         for(int block = 0; block < spawnsFloor.Length; block++)
         {
             int save = Random.Range(0, 2);         
@@ -39,9 +43,9 @@ public class GameController : MonoBehaviour
                 if (savedHoles == numberOfHoleLevel)                                   
                     break;      
             }           
-        }        
-        for(int i = 0; i < activeSpawns.Length; i++)                       
-                Instantiate(hole, new Vector3(activeSpawns[i].position.x, activeSpawns[i].position.y, activeSpawns[i].position.z),hole.transform.rotation*Quaternion.identity);        
+        }
+        StartCoroutine(InitLevel());
+        
     }
 
     public void OpenPause()
@@ -103,5 +107,14 @@ public class GameController : MonoBehaviour
         SceneManager.LoadScene(scene);        
     }
 
-    
+    private IEnumerator InitLevel()
+    {
+       
+        yield return new WaitForSeconds(2);
+        initPanel.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = goImage;       
+        yield return new WaitForSeconds(1);
+        initPanel.SetActive(false);
+        for (int i = 0; i < savedHoles; i++)
+            Instantiate(hole, new Vector3(activeSpawns[i].position.x, activeSpawns[i].position.y, activeSpawns[i].position.z), hole.transform.rotation * Quaternion.identity);
+    }
 }
