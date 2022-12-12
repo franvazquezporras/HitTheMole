@@ -6,6 +6,7 @@ using UnityEngine.Audio;
 using UnityEngine.UI;
 public class GameController : MonoBehaviour
 {
+    //Variables
     [Header("Spawners")]
     [SerializeField] private Transform[] spawnsFloor;
     [SerializeField] private GameObject hole;
@@ -23,13 +24,25 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject initPanel;
     [SerializeField] private Sprite goImage;
-    
+
+    /*********************************************************************************************************************************/
+    /*Funcion: Awake                                                                                                                 */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Descripción: Activa el juego y crea el array con el maximo de hoyos señalados en la variable                                   */
+    /*********************************************************************************************************************************/
     private void Awake()
     {
         Time.timeScale = 1;
         activeSpawns = new Transform[numberOfHoleLevel];
     }
 
+
+    /*********************************************************************************************************************************/
+    /*Funcion: Start                                                                                                                 */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Descripción: Recorre todos los bloques que permitan spawn y de forma aleatora selecciona cuales tendran spawn y cuales no      */
+    /*              si llega al final de la lista puede llegar o no al limite de hoyos                                               */
+    /*********************************************************************************************************************************/
     private void Start()
     {
         savedHoles = 0;
@@ -48,30 +61,56 @@ public class GameController : MonoBehaviour
         
     }
 
+    /*********************************************************************************************************************************/
+    /*Funcion: OpenPause                                                                                                             */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Descripción: Pausa el juego y muestra el menu de pause                                                                         */
+    /*********************************************************************************************************************************/
     public void OpenPause()
     {
         Time.timeScale = 0;
         pauseMenu.SetActive(true);
     }
-    
+
+
+    /*********************************************************************************************************************************/
+    /*Funcion: ClosePause                                                                                                            */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Descripción: Cierra el menu de pause y reactiva el juego                                                                       */
+    /*********************************************************************************************************************************/
     public void ClosePause()
     {
         Time.timeScale = 1;
         pauseMenu.SetActive(false);
     }
 
+    /*********************************************************************************************************************************/
+    /*Funcion: LosePanel                                                                                                             */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Descripción: Pausa el juego y muestra el panel de partida perdida                                                              */
+    /*********************************************************************************************************************************/
     public void LosePanel()
     {
         Time.timeScale = 0;
         losePanel.SetActive(true);
     }
 
+    /*********************************************************************************************************************************/
+    /*Funcion: ClearLevel                                                                                                            */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Descripción: Pausa el juego y muestra el panel de nivel completado                                                             */
+    /*********************************************************************************************************************************/
     public void ClearLevel()
     {
         Time.timeScale = 0;
         winPanel.SetActive(true);       
     }
 
+    /*********************************************************************************************************************************/
+    /*Funcion: MusicOnOff                                                                                                            */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Descripción: actualiza el sonido master y mutea la musica o la desmutea                                                        */
+    /*********************************************************************************************************************************/
     public void MusicOnOff()
     {
         if (musicOFF.IsActive())
@@ -83,30 +122,33 @@ public class GameController : MonoBehaviour
         {
             audioMixer.SetFloat("masterVolume", -80);            
             musicOFF.gameObject.SetActive(true);
-        }
-            
+        }            
     }
-    
-    public void NextLevel(string nextLevel)
-    {
-        LoadScene(nextLevel);
-    }
-
-    public void LoadMap()
-    {
-        LoadScene("LevelMap");
-    }
-    
+    /*********************************************************************************************************************************/
+    /*Funcion: Retry                                                                                                                 */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Descripción: Recarga la escena actual                                                                                          */
+    /*********************************************************************************************************************************/
     public void Retry()
     {
         LoadScene(SceneManager.GetActiveScene().name);
     }
-    
+    /*********************************************************************************************************************************/
+    /*Funcion: LoadScene                                                                                                             */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Parametros de entrada: nextLevel (nivel a cargar)                                                                              */
+    /*Descripción: Carga la escena recibida                                                                                          */
+    /*********************************************************************************************************************************/
     public void LoadScene(string scene)
     {
         SceneManager.LoadScene(scene);        
     }
 
+    /*********************************************************************************************************************************/
+    /*Funcion: InitLevel                                                                                                             */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Descripción: Genera los hoyos de los topos y muestra el cartel de inicio de partida(ready +go)                                 */
+    /*********************************************************************************************************************************/
     private IEnumerator InitLevel()
     {
        

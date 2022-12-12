@@ -7,7 +7,7 @@ public class MoleController : MonoBehaviour
 {
 
     //Variable
-    //Mobs
+    [Header("Mob Prefabs")]
     [SerializeField] private GameObject mole;
     [SerializeField] private GameObject penguin;
     [SerializeField] private GameObject duck;
@@ -15,7 +15,7 @@ public class MoleController : MonoBehaviour
     private enum MoleType { typeMole, typePenguin, typeDuck, typePlant };
     private MoleType mobType;
 
-    //AudiosMob
+    [Header("Audio")]
     [SerializeField] private AudioClip moledeath;
     [SerializeField] private AudioClip duckdeath;
     [SerializeField] private AudioClip penguindeath;
@@ -31,21 +31,39 @@ public class MoleController : MonoBehaviour
     private float penguinRate = 0.25f;
     private float plantRate = 0.1f;
     private float duckRate = 0.2f;
-    
-    //score and extra time
+
+    [Header("Score Mob")]
     [SerializeField] private int score;  
     GameObject gameController;
 
+
+    /*********************************************************************************************************************************/
+    /*Funcion: Awake                                                                                                                 */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Descripción: asigna la referencia del gamecontroller                                                                           */
+    /*********************************************************************************************************************************/
     private void Awake()
     {
         gameController = GameObject.FindGameObjectWithTag("GameController").gameObject;
     }
+
+    /*********************************************************************************************************************************/
+    /*Funcion: Start                                                                                                                 */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Descripción: Genera el primer mob e inicia su coroutine de aparacion                                                           */
+    /*********************************************************************************************************************************/
     private void Start()
     {
         CreateNext();
         StartCoroutine(ShowHide(startPosition, endPosition));
     }
 
+
+    /*********************************************************************************************************************************/
+    /*Funcion: CreateNext                                                                                                            */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Descripción: Genera el primer mob de forma aleatoria                                                                           */
+    /*********************************************************************************************************************************/
     private void CreateNext()
     {
         float random = Random.Range(0f, 1f);
@@ -71,6 +89,12 @@ public class MoleController : MonoBehaviour
         hittable = true;
     }
 
+    /*********************************************************************************************************************************/
+    /*Funcion: OnMouseDown                                                                                                           */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Descripción: Controla el clic del jugador sobre los distintos enemigos que se muestren en el terreno                           */
+    /*             asigna los puntos y si es necesario aumenta el tiempo o reduce el numero de vidas segun el mob                    */
+    /*********************************************************************************************************************************/
     private void OnMouseDown()
     {
         if (hittable)
@@ -104,6 +128,12 @@ public class MoleController : MonoBehaviour
             }
         }        
     }
+
+    /*********************************************************************************************************************************/
+    /*Funcion: GetDamage                                                                                                             */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Descripción: suma los puntos del mob, reproduce el sonido de muerte, desactiva su colision una vez muerto y oculta el mob      */
+    /*********************************************************************************************************************************/
     private void GetDamage()
     {
         gameController.GetComponent<ScoreControl>().SetScore(score);
@@ -115,6 +145,12 @@ public class MoleController : MonoBehaviour
         Refresh();
     }
 
+
+    /*********************************************************************************************************************************/
+    /*Funcion: QuickHide                                                                                                             */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Descripción: Oculta el mob una vez clicado                                                                                     */
+    /*********************************************************************************************************************************/
     private IEnumerator QuickHide()
     {
         yield return new WaitForSeconds(0.25f);
@@ -122,18 +158,35 @@ public class MoleController : MonoBehaviour
             Hide();
     }
 
-
+    /*********************************************************************************************************************************/
+    /*Funcion: Hide                                                                                                                  */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Descripción: Oculta el mob volviendolo a su posicion inicial                                                                   */
+    /*********************************************************************************************************************************/
     private void Hide()
     {
         transform.localPosition = startPosition;       
     }
 
+
+
+    /*********************************************************************************************************************************/
+    /*Funcion: Refresh                                                                                                               */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Descripción: destruye el ultimo mob y genera uno nuevo                                                                         */
+    /*********************************************************************************************************************************/
     private void Refresh()
     {
         Destroy(gameObject.transform.GetChild(0).gameObject);
         CreateNext();
         StartCoroutine(ShowHide(startPosition, endPosition));
     }
+
+    /*********************************************************************************************************************************/
+    /*Funcion: ShowHide                                                                                                              */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Descripción: una vez creado el mob se muestra pasado unos segundos, si no es golpeado tras unos segundos vuelve a ocultarse    */
+    /*********************************************************************************************************************************/
     private IEnumerator ShowHide(Vector3 start, Vector3 end)
     {
         transform.localPosition = start;

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class Layers
 {
+    //Constantes (layers) 
     public const int DEFAULT = 0;
     public const int TRANSPARENTFX = 1;
     public const int IGNORERAYCAST = 2;

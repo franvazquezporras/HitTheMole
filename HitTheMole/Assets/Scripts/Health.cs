@@ -4,12 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Health : MonoBehaviour
 {
+    //Variables
+    [Header("Max Lifes")]
     private int health = 6;
     public int numOfHearts;
 
+    [Header("Sprites Hearts")]
     public Image[] hearts;
     public Sprite heartUp;
     public Sprite heartDown;
+
+    /*********************************************************************************************************************************/
+    /*Funcion: Update                                                                                                                */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Descripción: Actualiza las vidas del player y controla cuando llegue a 0 para llamar a la funcion de LosePanel                 */
+    /*********************************************************************************************************************************/
     private void Update()
     {
         if (health > numOfHearts)
@@ -30,7 +39,11 @@ public class Health : MonoBehaviour
             GetComponent<GameController>().LosePanel();
         }
     }
-
+    /*********************************************************************************************************************************/
+    /*Funcion: TakeDamage                                                                                                            */
+    /*Desarrollador: Vazquez                                                                                                         */
+    /*Descripción: Reduce el numero de vidas en 1                                                                                    */
+    /*********************************************************************************************************************************/
     public void TakeDamage()
     {
         health--;        
