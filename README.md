@@ -7,9 +7,9 @@ Dispone de un menu principal con menu de opciones y selector de niveles,se van h
 Dispone de un modo arcade para de hasta 9999 puntos
 
 Hay 4 tipos de enemigos:
--Topo una sola vida y suma los puntos bases
+-Topo una sola vida y suma los puntos bases (1)
 -Pinguino dos vidas y suma el doble de puntos que el topo
--Planta 1 vida y no suma puntos pero da un power up de puntos
+-Planta 1 vida y no suma puntos pero pero aumenta el tiempo de juego
 -Pato 1 vida quita una vida a jugador(siendo 3 el maximo)
 
 
