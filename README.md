@@ -54,3 +54,13 @@ This game is based on the classic wack the mole game with modifications in the t
 
 *Link:*
 https://zetaka.itch.io/hitthemole
+
+
+![image](https://github.com/franvazquezporras/HitTheMole/assets/45006637/b1dd2c4e-6a30-40b7-80ad-6ea3b9f3a2cd)
+
+![image](https://github.com/franvazquezporras/HitTheMole/assets/45006637/21a70c00-7b58-41c9-ab16-0340abd45bc8)
+
+![image](https://github.com/franvazquezporras/HitTheMole/assets/45006637/cae8de7e-a941-40a5-8fe9-1734aed55d6f)
+
+
+
